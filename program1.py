@@ -1,18 +1,16 @@
-class Solution(object):
-	def isValid(self, s):
-        """
-        :type s: str
-        :rtype: bool
-        """
-        d = {'(':')', '{':'}','[':']'}
-        stack = []
-        for i in s:
-            if i in d:  # 1
-                stack.append(i)
-            elif len(stack) == 0 or d[stack.pop()] != i:  # 2
+def is_valid(s: str) -> bool:
+    # Dictionary to hold matching pairs of parentheses
+    bracket_map = {')': '(', '}': '{', ']': '['}
+    stack = []
+
+    for char in s:
+        if char in bracket_map:  # If it's a closing bracket
+            top_element = stack.pop() if stack else '#'  # Get the top element or a dummy value if stack is empty
+            if bracket_map[char] != top_element:  # Check if it matches the corresponding opening bracket
                 return False
-        return len(stack) == 0 # 3
-	
-# 1. if it's the left bracket then we append it to the stack
-# 2. else if it's the right bracket and the stack is empty(meaning no matching left bracket), or the left bracket doesn't match
-# 3. finally check if the stack still contains unmatched left bracket
+        else:  # If it's an opening bracket
+            stack.append(char)  # Push it onto the stack
+
+    # If the stack is empty, all brackets were matched correctly
+    return not stack
+
